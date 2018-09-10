@@ -190,11 +190,23 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m99-yj-HSc" customClass="QBCheckmarkView">
                                                     <rect key="frame" x="50" y="50" width="24" height="24"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTK-Lm-L5B">
+                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="8Dq-6v-oj1"/>
                                                         <constraint firstAttribute="height" constant="24" id="bBP-zT-euh"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outlet property="label" destination="RTK-Lm-L5B" id="CKW-Ek-Txy"/>
+                                                    </connections>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
@@ -226,6 +238,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
+                                    <outlet property="checkmarkView" destination="m99-yj-HSc" id="Ndt-j8-1IH"/>
                                     <outlet property="imageView" destination="0aq-fn-r9R" id="smK-ma-TWL"/>
                                     <outlet property="overlayView" destination="uyS-Tg-Iyl" id="N6m-w2-m4M"/>
                                     <outlet property="videoIndicatorView" destination="BwJ-KE-LWZ" id="HkB-Dc-nzF"/>
