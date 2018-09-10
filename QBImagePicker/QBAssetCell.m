@@ -24,4 +24,10 @@
     self.overlayView.hidden = !(selected && self.showsOverlayViewWhenSelected);
 }
 
+- (void)updateSelectedLabelForIndex:(NSUInteger)selectedIndex
+{
+    NSString *label = [@(selectedIndex + 1) stringValue];
+    [self.checkmarkView.label setText:label];
+}
+
 @end

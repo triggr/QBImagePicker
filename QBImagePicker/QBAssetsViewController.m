@@ -480,8 +480,10 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     }
     
     // Selection state
-    if ([self.imagePickerController.selectedAssets containsObject:asset]) {
+    NSUInteger selectedIndex = [self.imagePickerController.selectedAssets indexOfObject:asset];
+    if (selectedIndex != NSNotFound) {
         [cell setSelected:YES];
+        [cell updateSelectedLabelForIndex:selectedIndex];
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     
@@ -589,6 +591,11 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         
         [self updateDoneButtonState];
         
+        // Set the index label
+        QBAssetCell *cell = (QBAssetCell*)[collectionView cellForItemAtIndexPath:indexPath];
+        NSUInteger selectedIndex = [selectedAssets indexOfObject:asset];
+        [cell updateSelectedLabelForIndex:selectedIndex];
+
         if (imagePickerController.showsNumberOfSelectedAssets) {
             [self updateSelectionInfo];
             
@@ -626,6 +633,9 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     
     [self updateDoneButtonState];
     
+    // Shift the index labels (inefficient, only cells after the deselected cell need be adjusted)
+    [collectionView reloadItemsAtIndexPaths:[collectionView indexPathsForSelectedItems]];
+
     if (imagePickerController.showsNumberOfSelectedAssets) {
         [self updateSelectionInfo];
         
