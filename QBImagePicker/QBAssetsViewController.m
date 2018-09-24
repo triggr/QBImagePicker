@@ -212,14 +212,8 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     
     if (selectedAssets.count > 0) {
         NSBundle *bundle = self.imagePickerController.assetBundle;
-        NSString *format;
-        if (selectedAssets.count > 1) {
-            format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.items-selected", @"QBImagePicker", bundle, nil);
-        } else {
-            format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.item-selected", @"QBImagePicker", bundle, nil);
-        }
-        
-        NSString *title = [NSString stringWithFormat:format, selectedAssets.count];
+        NSString *format = NSLocalizedStringFromTableInBundle(@"assets.toolbar.items-selected-ratio", @"QBImagePicker", bundle, nil);
+        NSString *title = [NSString stringWithFormat:format, selectedAssets.count, self.imagePickerController.maximumNumberOfSelection];
         [(UIBarButtonItem *)self.toolbarItems[1] setTitle:title];
     } else {
         [(UIBarButtonItem *)self.toolbarItems[1] setTitle:@""];
@@ -484,8 +478,10 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     }
     
     // Selection state
-    if ([self.imagePickerController.selectedAssets containsObject:asset]) {
+    NSUInteger selectedIndex = [self.imagePickerController.selectedAssets indexOfObject:asset];
+    if (selectedIndex != NSNotFound) {
         [cell setSelected:YES];
+        [cell updateSelectedLabelForIndex:selectedIndex];
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
     }
     
@@ -593,6 +589,11 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
         
         [self updateDoneButtonState];
         
+        // Set the index label
+        QBAssetCell *cell = (QBAssetCell*)[collectionView cellForItemAtIndexPath:indexPath];
+        NSUInteger selectedIndex = [selectedAssets indexOfObject:asset];
+        [cell updateSelectedLabelForIndex:selectedIndex];
+
         if (imagePickerController.showsNumberOfSelectedAssets) {
             [self updateSelectionInfo];
             
@@ -630,6 +631,9 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
     
     [self updateDoneButtonState];
     
+    // Shift the index labels (inefficient, only cells after the deselected cell need be adjusted)
+    [collectionView reloadItemsAtIndexPaths:[collectionView indexPathsForSelectedItems]];
+
     if (imagePickerController.showsNumberOfSelectedAssets) {
         [self updateSelectionInfo];
         
